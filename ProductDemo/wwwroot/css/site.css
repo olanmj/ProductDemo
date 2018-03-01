@@ -33,3 +33,7 @@
         display: none;
     }
 }
+
+.card-header {
+    padding: 10px;
+}
