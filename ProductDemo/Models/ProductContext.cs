@@ -13,5 +13,6 @@ namespace ProductDemo.Models
         }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Company> Companies { get; set; }
     }
 }

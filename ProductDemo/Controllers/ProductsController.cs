@@ -21,7 +21,7 @@ namespace ProductDemo.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.ToListAsync());
+            return View(await _context.Products.Include(p => p.Company).ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -32,7 +32,7 @@ namespace ProductDemo.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
+            var product = await _context.Products.Include(p => p.Company)
                 .SingleOrDefaultAsync(m => m.ProductID == id);
             if (product == null)
             {
@@ -45,6 +45,7 @@ namespace ProductDemo.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
+            ViewData["Companies"] = new SelectList(_context.Companies, "CompanyID", "Name");
             return View();
         }
 
@@ -53,9 +54,9 @@ namespace ProductDemo.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductID,Name,Description,Price,Category,Quantity")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductID,Name,Description,Price,Category,Quantity,CompanyID")] Product product)
         {
-            if (ModelState.IsValid)
+           if (ModelState.IsValid)
             {
                 _context.Add(product);
                 await _context.SaveChangesAsync();
@@ -85,7 +86,7 @@ namespace ProductDemo.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductID,Name,Description,Price,Category,Quantity")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductID,Name,Description,Price,Category,Quantity,CompanyID")] Product product)
         {
             if (id != product.ProductID)
             {

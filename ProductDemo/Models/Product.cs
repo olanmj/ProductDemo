@@ -13,6 +13,8 @@ namespace ProductDemo.Models
         public decimal Price { get; set; }
         public string Category { set; get; }
         public int Quantity { get; set; }
+        public Company Company { get; set; }
+        public int CompanyID { get; set; }
         public decimal AmountDue
         {
             get
